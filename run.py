@@ -4,6 +4,7 @@
 
 import gspread #Library for classes and methods
 from google.oauth2.service_account import Credentials #Imports credentials class from service_account function, For google sheets to access our creds.json
+from pprint import pprint # example:pprint(data) can be used to easier see the data print in the terminal
 
 #What we want to access
 SCOPE = [
@@ -59,7 +60,6 @@ def validate_data(values):
         print(f"invalid data: {e}, please try again.\n")
         return False
         
-    
     return True
 
 def update_sales_worksheet(data):
@@ -71,6 +71,31 @@ def update_sales_worksheet(data):
     sales_worksheet.append_row(data) #Creates a row in the worksheet with the new data
     print("Sales worksheet updated successfully.\n")
 
-data = get_sales_data() #data is the users input data
-sales_data = [int(num) for num in data] #sales_data is data but in integers
-update_sales_worksheet(sales_data) #Updates the worksheet with sales_data
+def calculate_surplus_data(sales_row):
+    """
+    Compare sales with stock and calculate the surplus for each item type
+
+    The surplus is defined as the sales figure subtracted from the stock:
+    - Positive surplus indicates waste
+    - Negative surplus indicates extra sandwiches made when stock was sold out.
+    """
+    print("Calculating surplus data...\n")
+    stock = SHEET.worksheet("stock").get_all_values()
+    stock_row = stock[-1] #Stock_row is now the last row of the stock worksheet
+    print(stock_row)
+
+
+def main():
+    """
+    Run all program functions
+    """
+    data = get_sales_data() #data is the users input data
+    sales_data = [int(num) for num in data] #sales_data is data but in integers
+    update_sales_worksheet(sales_data) #Updates the worksheet with sales_data
+    calculate_surplus_data(sales_data)
+
+
+
+#============== Start ============#
+print("Welcome to Love Sandwiches Data Automation")
+main()
