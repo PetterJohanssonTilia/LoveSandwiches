@@ -121,6 +121,18 @@ def get_last_5_entries_sales():
         columns.append(column[-5:]) #adds the last 5 value of each column into the columns list, as 5 list containing strings
     return columns
 
+def calculate_stock_data(data):
+    """
+    Calculate the average need of stock for each item type, adding 10%
+    """
+    print("Calculating stock data...\n")
+    new_stock_data = []
+    for column in data:
+        int_column = [int(num) for num in column] #converts the values into integers
+        average = sum(int_column) / len(int_column) # average = sum of the values / the number of values
+        stock_num = average * 1.1 #Adding 10% to the average to promote more sales
+        new_stock_data.append(round(stock_num)) #Adds the stock data to use for the upcoming day into new_stock_data and rounds the numbers
+    return new_stock_data
 
 def main():
     """
@@ -131,11 +143,13 @@ def main():
     update_worksheet(sales_data, "sales") #Updates the worksheet with sales_data
     new_surplus_data = calculate_surplus_data(sales_data) #calculates the surplus by comparing stock vs sales
     update_worksheet(new_surplus_data, "surplus") #Updates the worksheet with sales_data
-    
+    sales_columns = get_last_5_entries_sales() #Gets the data from the last 5 days of sales
+    stock_data = calculate_stock_data(sales_columns) #Calculates the stock needed for the upcoming day
+    update_worksheet(stock_data, "stock") #Updates the stock worksheet
+
 
 
 
 #============== Start ============#
 print("Welcome to Love Sandwiches Data Automation")
-#main()
-sales_columns = get_last_5_entries_sales()
+main()
