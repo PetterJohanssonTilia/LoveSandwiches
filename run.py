@@ -19,3 +19,10 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 #Creating the sheet from our love_sandwiches file on google sheets
 SHEET = GSPREAD_CLIENT.open('love_sandwiches')
+
+#sales variable is now the same as the google sheet tab "sales"
+sales = SHEET.worksheet('sales')
+#Grabs all the values inside the sales tab
+data = sales.get_all_values()
+
+print(data)
