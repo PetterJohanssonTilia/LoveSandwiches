@@ -4,7 +4,7 @@
 
 import gspread #Library for classes and methods
 from google.oauth2.service_account import Credentials #Imports credentials class from service_account function, For google sheets to access our creds.json
-from pprint import pprint # example:pprint(data) can be used to easier see the data print in the terminal
+
 
 #What we want to access
 SCOPE = [
@@ -33,7 +33,7 @@ def get_sales_data():
         print("Data should be six numbers, seperated by commas.")
         print("Example: 10,20,30,40,50,60\n")
 
-        data_str = input("Enter your data here:")
+        data_str = input("Enter your data here:\n") #Need to add a new line at the end of an input because of the code we use to upload to heroku
 
         sales_data = data_str.split(",") #The string gets split up into a list
         print(sales_data)
